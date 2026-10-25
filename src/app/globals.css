@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Tokens semânticos com tema claro e escuro.
+ * O tema vem de data-theme no <html> (botão do header); sem JS, segue o sistema.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --canvas: #f4f7f2;
+  --surface: #ffffff;
+  --surface-muted: #e9f0e7;
+  --edge: #d9e3da;
+  --content: #0b1f19;
+  --content-soft: #4b6058;
+  --brand: #0f6e56;
+  --primary: #0b1f19;
+  --on-primary: #c0dd97;
+  --accent: #c0dd97;
+  --on-accent: #04241e;
+  --glow: rgba(93, 202, 165, 0.35);
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root[data-theme="dark"] {
+  --canvas: #070a09;
+  --surface: #0d1310;
+  --surface-muted: #122019;
+  --edge: #1f2e27;
+  --content: #f2f7f4;
+  --content-soft: #9db8ad;
+  --brand: #5dcaa5;
+  --primary: #c0dd97;
+  --on-primary: #04241e;
+  --accent: #c0dd97;
+  --on-accent: #04241e;
+  --glow: rgba(15, 110, 86, 0.55);
+  color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --canvas: #070a09;
+    --surface: #0d1310;
+    --surface-muted: #122019;
+    --edge: #1f2e27;
+    --content: #f2f7f4;
+    --content-soft: #9db8ad;
+    --brand: #5dcaa5;
+    --primary: #c0dd97;
+    --on-primary: #04241e;
+    --accent: #c0dd97;
+    --on-accent: #04241e;
+    --glow: rgba(15, 110, 86, 0.55);
+    color-scheme: dark;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --font-sans: var(--font-sora), system-ui, sans-serif;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-edge: var(--edge);
+  --color-content: var(--content);
+  --color-content-soft: var(--content-soft);
+  --color-brand: var(--brand);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+}
+
+@theme {
+  /* marca (fixas nos dois temas) */
+  --color-musgo: #0f6e56;
+  --color-musgo-deep: #0a4b3c;
+  --color-fundo: #04241e;
+  --color-lime: #c0dd97;
+  --color-menta: #5dcaa5;
+  --color-menta-soft: #9fe1cb;
+
+  /* tons para avatares */
+  --color-tint-lime: #eaf4da;
+  --color-tint-menta: #dbf3ea;
+  --color-tint-sky: #e0edf6;
+  --color-tint-lilac: #ebe7fa;
+  --color-tint-peach: #fde8d6;
+  --color-tint-rose: #fbe2e0;
+  --color-ink-lime: #3e5a14;
+  --color-ink-menta: #0a5a45;
+  --color-ink-sky: #0b5a86;
+  --color-ink-lilac: #4c3ba0;
+  --color-ink-peach: #8a4b00;
+  --color-ink-rose: #9f2d20;
+
+  /* app (sempre escuro dentro dos celulares) */
+  --color-app: #070a09;
+  --color-app-card: #0d1310;
+  --color-app-raised: #102019;
+  --color-app-line: #18241f;
+  --color-app-line-strong: #2a4035;
+  --color-app-text: #f2f7f4;
+  --color-app-text-soft: #8fb3a6;
+  --color-app-text-faint: #7e978c;
+
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(93, 202, 165, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(93, 202, 165, 0);
+    }
+  }
+}
+
+/* Em @layer base para que as utilities do Tailwind vençam. */
+@layer base {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--canvas);
+    color: var(--content);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease;
+  }
+
+  a {
+    color: var(--brand);
+  }
+
+  details > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+.bg-app-radial {
+  background: radial-gradient(120% 90% at 100% 0%, #0f6e56 0%, #04241e 60%);
+}
+
+.hero-glow {
+  background: radial-gradient(50% 60% at 50% 40%, var(--glow) 0%, transparent 70%);
+}
+
+.grid-lines {
+  background-image:
+    linear-gradient(to right, var(--edge) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--edge) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(70% 60% at 50% 30%, #000 30%, transparent 75%);
 }
