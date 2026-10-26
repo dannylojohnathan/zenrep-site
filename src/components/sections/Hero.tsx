@@ -22,13 +22,13 @@ export function Hero() {
 
         <h1
           id="hero-titulo"
-          className="m-0 max-w-[1000px] text-[clamp(36px,9vw,96px)] leading-[0.95] font-extrabold tracking-[-0.06em]"
+          className="m-0 max-w-[1100px] text-[clamp(28px,8.6vw,88px)] leading-[0.95] font-extrabold tracking-[-0.06em]"
         >
-          <span className="whitespace-nowrap">Treine.</span>{" "}
-          <span className="whitespace-nowrap">Faça check-in.</span>
+          <span className="whitespace-nowrap">Check-ins,</span>{" "}
+          <span className="whitespace-nowrap">Conquistas e</span>
           <br />
           <span className="mt-2 inline-block -skew-x-6 rounded-2xl bg-accent px-[0.18em] pb-[0.08em] whitespace-nowrap text-on-accent">
-            <span className="inline-block skew-x-6">Suba no ranking.</span>
+            <span className="inline-block skew-x-6">Comunidade Fitness</span>
           </span>
         </h1>
 
@@ -68,11 +68,11 @@ export function Hero() {
               <HomeScreen />
             </PhoneFrame>
 
-            <div className="absolute top-[150px] -left-4 flex items-center gap-2 rounded-2xl bg-accent px-3.5 py-2.5 text-on-accent shadow-[0_16px_32px_rgba(0,0,0,0.18)] sm:-left-24">
+            <div className="absolute top-[232px] -left-24 hidden items-center gap-2 rounded-2xl bg-accent px-3.5 py-2.5 text-on-accent shadow-[0_16px_32px_rgba(0,0,0,0.18)] sm:flex">
               <Trophy size={18} aria-hidden="true" />
               <span className="text-sm font-bold">+52 pts</span>
             </div>
-            <div className="absolute top-[300px] -right-4 flex items-center gap-2 rounded-2xl border border-edge bg-surface px-3.5 py-2.5 shadow-[0_16px_32px_rgba(0,0,0,0.14)] sm:-right-28">
+            <div className="absolute top-[300px] -right-28 hidden items-center gap-2 rounded-2xl border border-edge bg-surface px-3.5 py-2.5 shadow-[0_16px_32px_rgba(0,0,0,0.14)] sm:flex">
               <Flame size={18} aria-hidden="true" className="text-brand" />
               <span className="text-left text-sm leading-tight font-semibold">
                 5 dias

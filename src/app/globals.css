@@ -103,7 +103,7 @@
   --color-app-line-strong: #2a4035;
   --color-app-text: #f2f7f4;
   --color-app-text-soft: #8fb3a6;
-  --color-app-text-faint: #7e978c;
+  --color-app-text-faint: #5c7268;
 
   --animate-marquee: marquee 32s linear infinite;
   --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
@@ -170,8 +170,13 @@
   }
 }
 
-.bg-app-radial {
-  background: radial-gradient(120% 90% at 100% 0%, #0f6e56 0%, #04241e 60%);
+/* degradês do app: destaque (lime → menta) e capa de treino (musgo → fundo) */
+.bg-app-accent {
+  background: linear-gradient(135deg, #c0dd97, #5dcaa5);
+}
+
+.bg-app-cover {
+  background: linear-gradient(135deg, #0f6e56 0%, #0a4b3c 55%, #04241e 100%);
 }
 
 .hero-glow {

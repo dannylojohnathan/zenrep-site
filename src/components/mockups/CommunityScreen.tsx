@@ -1,109 +1,109 @@
-import Image from "next/image";
-import { ArrowRight, Award, Bookmark, CircleCheck, Dumbbell, Lock, UserPlus } from "lucide-react";
-import { communityWorkouts, currentUser, people, type Person } from "@/content/mockData";
-import { Avatar } from "@/components/ui/Avatar";
-import { AppTabBar } from "./AppTabBar";
+import type { ReactNode } from "react";
+import { communityWorkouts, currentUser, people, type Person, type Workout } from "@/content/mockData";
+import { AppAvatar } from "./AppAvatar";
+import { AppIcon, type AppIconName } from "./AppIcon";
+import { AppScreen } from "./AppTabBar";
 
 const publishedWorkout = communityWorkouts[2];
+const savedWorkout = communityWorkouts[3];
 
-function EventHeader({ person, action, time }: { person: Person; action: string; time: string }) {
+const innerBox = "mt-3 rounded-[14px] border border-app-line bg-app-raised p-3";
+
+function TimelineCard({ person, action, time, children }: { person: Person; action: string; time: string; children: ReactNode }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <Avatar person={person} size={36} />
-      <p className="m-0 flex-1 text-[13px] leading-[1.35] text-app-text-soft">
-        <strong className="font-semibold text-app-text">{person.name}</strong> {action}
-      </p>
-      <span className="text-[11px] text-app-text-faint">{time}</span>
+    <article className="rounded-[18px] border border-app-line bg-app-card p-4">
+      <div className="flex min-h-11 items-center gap-3">
+        <AppAvatar person={person} size={40} />
+        <div className="min-w-0 flex-1">
+          <p className="m-0 truncate text-sm font-semibold">{person.name}</p>
+          <p className="m-0 text-xs text-app-text-faint">
+            {action} · {time}
+          </p>
+        </div>
+      </div>
+      {children}
+    </article>
+  );
+}
+
+function WorkoutRow({ workout, icon }: { workout: Workout; icon: AppIconName }) {
+  return (
+    <div className={`${innerBox} flex items-center gap-3`}>
+      <span className="flex size-14 flex-none items-center justify-center rounded-xl border border-app-line-strong bg-app-card text-menta">
+        <AppIcon name={icon} size={17} />
+      </span>
+      <div className="min-w-0">
+        <p className="m-0 text-sm font-semibold">{workout.name}</p>
+        <p className="mt-1 mb-0 flex gap-3 text-xs">
+          <span className="text-app-text-soft">Musculação</span>
+          <span className="inline-flex items-center gap-1 text-app-text-faint">
+            <AppIcon name="clock" size={13} /> {workout.minutes} min
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
 
 export function CommunityScreen() {
   return (
-    <div className="relative flex h-full w-full flex-col bg-app font-sans text-app-text">
-      <div className="h-[50px] flex-none" />
-      <div className="flex flex-1 flex-col gap-3 overflow-hidden px-5">
-        <header className="flex items-center gap-2">
-          <div className="flex-1">
-            <h3 className="m-0 text-[26px] font-bold tracking-[-0.035em]">Comunidade</h3>
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-menta">
-              <span className="size-2 rounded-full bg-menta" /> Ao vivo
-            </span>
-          </div>
-          <span className="flex size-10 items-center justify-center rounded-full bg-musgo text-lime">
-            <Dumbbell size={18} />
+    <AppScreen active="comunidade">
+      <header className="mb-4 flex items-center gap-2.5">
+        <div className="min-w-0 flex-1">
+          <h3 className="m-0 text-xl font-bold">Comunidade</h3>
+          <span className="mt-0.5 inline-flex items-center gap-1.5 text-[11.5px] text-menta">
+            <span className="size-[7px] rounded-full bg-menta shadow-[0_0_8px_#5DCAA5]" /> Ao vivo
           </span>
-          <span className="flex size-10 items-center justify-center rounded-full bg-musgo text-lime">
-            <UserPlus size={18} />
-          </span>
-          <Avatar person={currentUser.person} size={40} ringClassName="ring-2 ring-menta" />
-        </header>
-
-        <span className="self-center rounded-full bg-lime px-4 py-2 text-[13px] font-semibold text-fundo shadow-[0_8px_20px_rgba(0,0,0,0.4)]">
-          2 novas atividades
+        </div>
+        <span className="bg-app-accent flex size-10 items-center justify-center rounded-[13px] text-fundo">
+          <AppIcon name="dumbbell" size={20} />
         </span>
+        <span className="bg-app-accent flex size-10 items-center justify-center rounded-[13px] text-fundo">
+          <AppIcon name="userPlus" size={20} />
+        </span>
+        <AppAvatar person={currentUser.person} size={44} />
+      </header>
 
-        <article className="flex flex-col gap-3 rounded-[22px] border border-app-line bg-app-card p-3.5">
-          <EventHeader person={people.marina} action="fez check-in" time="há 5 min" />
-          <div className="flex items-center gap-3 rounded-2xl bg-app-raised p-3">
-            <CircleCheck size={22} className="text-lime" />
-            <div className="flex-1">
-              <p className="m-0 text-sm font-semibold">Treino de casal!</p>
-              <p className="m-0 text-xs text-app-text-soft">Musculação · 340 kcal</p>
-            </div>
-            <span className="text-sm font-bold text-lime">+52 pts</span>
-          </div>
-        </article>
-
-        <article className="flex flex-col gap-3 rounded-[22px] border border-app-line bg-app-card p-3.5">
-          <EventHeader person={people.pedro} action="publicou um treino" time="há 1 h" />
-          <div className="flex items-center gap-3 rounded-2xl bg-app-raised p-2.5">
-            <Image
-              src={publishedWorkout.exercises[0].gifSrc}
-              alt=""
-              width={56}
-              height={56}
-              unoptimized
-              className="size-14 rounded-xl bg-white object-cover"
-            />
-            <div className="flex-1">
-              <p className="m-0 text-sm font-semibold">{publishedWorkout.name}</p>
-              <p className="m-0 text-xs text-app-text-soft">
-                {publishedWorkout.exercises.length} exercícios · {publishedWorkout.minutes} min
-              </p>
-            </div>
-            <ArrowRight size={18} className="text-app-text-faint" />
-          </div>
-        </article>
-
-        <article className="flex flex-col gap-3 rounded-[22px] border border-app-line bg-app-card p-3.5">
-          <EventHeader person={people.juliana} action="ganhou uma conquista" time="há 3 h" />
-          <div className="flex items-center gap-3 rounded-2xl bg-lime/10 p-3">
-            <Award size={22} className="text-lime" />
-            <p className="m-0 text-sm font-semibold text-lime">7 dias seguidos</p>
-          </div>
-        </article>
-
-        <article className="flex items-center gap-2.5 rounded-[22px] border border-app-line bg-app-card p-3.5">
-          <Avatar person={people.amanda} size={36} />
-          <p className="m-0 flex-1 text-[13px] text-app-text-soft">
-            <strong className="font-semibold text-app-text">Amanda</strong> salvou{" "}
-            <strong className="font-semibold text-app-text">Peito pesado</strong>
-          </p>
-          <Bookmark size={18} className="text-menta" />
-        </article>
-
-        <article className="flex items-center gap-2.5 rounded-[22px] border border-app-line bg-app-card p-3.5">
-          <Avatar person={people.juliana} size={36} />
-          <p className="m-0 flex-1 text-[13px] text-app-text-soft">
-            <strong className="font-semibold text-app-text">Juliana</strong> fez check-in
-          </p>
-          <span className="inline-flex items-center gap-1 text-xs text-app-text-faint">
-            <Lock size={13} /> Privado
-          </span>
-        </article>
+      <div className="flex justify-center pb-3">
+        <span className="bg-app-accent inline-flex h-9 items-center gap-[7px] rounded-full px-4 text-[13px] font-bold text-fundo shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
+          <AppIcon name="arrowUp" size={15} strokeWidth={2.6} /> 2 novas atividades
+        </span>
       </div>
-      <AppTabBar active="comunidade" />
-    </div>
+
+      <div className="flex flex-col gap-3">
+        <TimelineCard person={people.marina} action="fez check-in" time="há 5 min">
+          <div className={`${innerBox} overflow-hidden`}>
+            <div className="-mx-3 -mt-3 mb-2 h-[72px] bg-[linear-gradient(180deg,rgba(15,110,86,0.55),#102019)]" />
+            <p className="m-0 text-sm font-semibold">Treino de casal!</p>
+            <p className="mt-[5px] mb-0 text-xs text-app-text-soft">Musculação</p>
+            <p className="mt-2 mb-0 flex gap-4 text-[13px] font-semibold">
+              <span className="inline-flex items-center gap-1.5 text-lime">
+                <AppIcon name="zap" size={14} /> 52 pts
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-menta">
+                <AppIcon name="flame" size={14} /> 340 kcal
+              </span>
+            </p>
+          </div>
+        </TimelineCard>
+
+        <TimelineCard person={people.pedro} action="publicou um treino" time="há 1 h">
+          <WorkoutRow workout={publishedWorkout} icon="share" />
+        </TimelineCard>
+
+        <TimelineCard person={people.juliana} action="ganhou uma conquista" time="há 3 h">
+          <div className={`${innerBox} flex items-center gap-3`}>
+            <span className="flex size-10 items-center justify-center rounded-full border border-app-line-strong bg-app-card text-lime">
+              <AppIcon name="award" size={20} />
+            </span>
+            <span className="text-sm font-semibold text-lime">7 dias seguidos</span>
+          </div>
+        </TimelineCard>
+
+        <TimelineCard person={people.amanda} action="salvou um treino" time="ontem">
+          <WorkoutRow workout={savedWorkout} icon="plus" />
+        </TimelineCard>
+      </div>
+    </AppScreen>
   );
 }
